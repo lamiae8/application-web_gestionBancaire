@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org">
+
+<head>
+	<meta charset="UTF-8"> 
+	<link th:replace="libs::libs"></link>
+	<title>Comptes</title>
+	
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+	<header th:replace="fragment/header :: header"></header>
+	<div class="container mt-5">
+
+
+		<div class="card mt-5">
+
+
+			<div class="card-header">Liste des comptes</div>
+
+			<div class="card-body">
+				<table class="table  text-center" th:if="${listComptes}" id="myTable1">
+
+
+					<tr>
+						<th>Code</th>
+						<th>Proprietaire </th>
+						<th>Type</th>
+						<th>Solde</th>
+						<th>Date de creation </th>
+						<th>Employe </th>
+						<th>Taux/Decouvert </th>
+
+
+
+					</tr>
+					<tr th:each="cpt:${listComptes}">
+						<td th:text="${cpt.codeCompte}"></td>
+						<td th:text="${cpt.client?.nomClient}"></td>
+						<td th:text="${cpt.class.simpleName}"></td>
+						<td th:text="${cpt.solde}"></td>
+						<td th:text="${cpt.dateCreation}"></td>
+						<td th:text="${cpt.employe?.nomEmploye}"></td>
+						<!--   -->
+
+
+						<td th:if="${cpt.class.simpleName=='CompteCourant'}" th:text="${cpt.decouvert}"></td>
+						<td th:if="${cpt.class.simpleName=='CompteEpargne'}" th:text="${cpt.taux}"></td>
+
+
+
+
+
+
+					</tr>
+				</table>
+
+
+			</div>
+
+		</div>
+	</div>
+<br/><br/><br/><br/><br/><br/><br/>
+	<footer th:replace="fragment/footer :: footer" ></footer> 
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#myTable1').DataTable();
+		});
+	</script>
+</body>
+
+</html>

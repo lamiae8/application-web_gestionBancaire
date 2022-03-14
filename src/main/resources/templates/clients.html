@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Liste des Clients</title>
+		<meta charset="ISO-8859-1">
+	<title>Comptes</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">	
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	
+
+	
+	
+	<!-- Datatables  -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" >
+	<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js" ></script>
+
+
+	</head>
+	<body class="d-flex flex-column min-vh-100">
+	<header th:replace="fragment/header :: header"></header>
+		<div class="container mt-5">
+			<div class="card">
+				 <div class="card-header">Liste des clients</div>
+				 <div class="card-body">
+					 <table class="table  text-center" id="myTable">
+						 <tr>
+						 	<th>Code du client</th><th>Nom du client</th><th></th>
+						 </tr>
+						 <tr th:each="client:${listClients}">
+							 <td th:text="${client.codeClient}"></td>
+							 <td th:text="${client.nomClient}"></td>
+							 <td><a th:href="@{/comptesClient/{codeClient}(codeClient=${client.codeClient})}"><button type="button" class="btn btn-info"  aria-pressed="false" autocomplete="off" >Consulter ses comptes</button></a></td>
+							
+							
+						 </tr>
+					 </table>
+				 </div>
+			</div>
+		</div>
+		<br/><br/>
+		
+		
+		<div class="col-md-12 text-center">
+			<button type="button" onclick="showDiv()" class="btn btn-info text-center"  aria-pressed="false" autocomplete="off"  >Ajouter un client</button>
+			<div  style="display:none;" id="ajouterclient">
+	<br/>
+	<div class="card" style="width:28rem ;margin:auto;border:solid 2px primary"> <br/>
+	<form th:action="@{/ajouterClient}" methode="post">
+	<label for="nomClient">Nom du client:</label><br>
+  <input type="text"  name="nomClient" ><br><br>
+ <div class="col-md-12 text-center">
+			<button type="submit" class="btn btn-primary text-center"  aria-pressed="false" autocomplete="off"  >Ajouter</button>
+		</div>	</form >
+	<br/>
+	</div>
+	
+	
+	
+			</div >
+</div>
+	
+		
+					
+											
+				
+	<br/><br/>	<br/>
+		
+		<footer th:replace="fragment/footer :: footer"></footer>
+	
+		        
+		        <script>
+		        function showDiv() {
+   document.getElementById("ajouterclient").style.display = "block";
+   
+   
+}
+	
+		        </script>
+		        <script type="text/javascript">
+
+	$(document).ready( function () {
+    $('#myTable').DataTable();
+  
+} );
+</script >
+	</body>
+</html>

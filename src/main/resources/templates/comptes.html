@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org">
+
+<head>
+	<meta charset="UTF-8" /> <link th:replace="libs::libs"></link>
+	<title>Operations</title>
+
+
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+	<header th:replace="fragment/header :: header"></header>
+	<div class="container mt-5 row">
+			<div class="card " style="width: 28rem;margin:auto">
+				 <div class="card-header">Consulter un compte</div>
+				 <div class="card-body">
+				<form th:action="@{/consulterCompte}" method="get">
+					<label for="codeCompte">code du compte:</label><br>
+					<input type="text" name="codeCompte"><br><br>
+					<input type="submit" value="consulter">
+				</form>
+      <br/> 
+                    <div  th:if="${getComptes}">
+                      
+                           <strong style="color: blue;" >Informations sur le Compte</strong > 
+                        
+                       
+                            <div>
+                                <label>Client :</label>
+                                <label th:text="${getComptes.client.nomClient}"></label>
+                            </div>
+
+                            <div>
+                                <label>Code :</label>
+                                <label th:text="${getComptes.codeCompte}"></label>
+                            </div>
+                            <div>
+                                <label>Solde :</label>
+                                <label th:text="${getComptes.solde}"></label>
+                            </div>
+                            <div>
+                                <label>Date Création :</label>
+                                <label th:text="${getComptes.dateCreation}"></label>
+                            </div>
+                            <div>
+                                <label>Type :</label>
+                                <label th:text="${getComptes.class.simpleName}"></label>
+                            </div>
+                            <div th:if="${getComptes.class.simpleName=='CompteCourant'}">
+                                <label>Découvert :</label>
+                                <label th:text="${getComptes.decouvert}"></label>
+                            </div>
+                            <div th:if="${getComptes.class.simpleName=='CompteEpargne'}">
+                                <label>Taux :</label>
+                                <label th:text="${getComptes.taux}"></label>
+                            </div>
+                        </div>
+                  
+                </div>
+			</div >
+		
+		
+ 
+		
+			
+			<div class="card " style="width: 28rem;" th:if="${getComptes}">
+				 <div class="card-header">Operation sur un compte</div>
+				 <div class="card-body">
+					<form th:action="@{/saveOperation}" method="POST">
+						<div >
+							<label>Compte: </label>
+							
+							<input style="display: none;" name="codeCompte" th:value="${getComptes.codeCompte}" /> 
+							<label th:text="${getComptes.codeCompte}"></label >
+						</div >
+						<div>
+							<input type="radio" name="typeOperation" value="VERS" checked="checked"  onchange="document.getElementById('forVirement').style.display='none'"/>
+							<label>Versement</label>
+							<input type="radio" name="typeOperation" value="RET"  onchange="document.getElementById('forVirement').style.display='none'"/>
+							<label>Retrait</label>
+							<input type="radio" name="typeOperation" value="VIR"  onchange="document.getElementById('forVirement').style.display='block'" />
+							<label>Virement</label>
+						</div>
+						<div id="forVirement" style="display:none">
+						<label>Vers:</label>
+						<input  type="text" name="codeCompte2"/>
+						</div >
+						
+						<div >
+						<label>Montant:</label>
+						<input  type="text" name="montant"/>
+						</div >
+						<div >
+						<label>Code Employe:</label>
+						<input  type="text" name="codeEmploye"/>
+						</div >
+						<button type="submit" class="btn btn-primary">Effectuer</button >
+					</form>  
+				</div>
+
+
+			
+
+	</div>
+	</div>
+
+<div class="container mt-5 row" th:if="${PagesOperations}">
+			<div class="card " style="width: 68rem; margin-left:100px">
+				 <div class="card-header">Historique des operations</div>
+				 <div class="card-body">
+			  <table class="table table-striped display"  id="myTable">
+				  <thead>
+				    <tr >
+				      <th scope="col">Numero d'Operation</th>
+				      <th scope="col">Type</th>
+				      <th scope="col">Montant</th>
+				      <th scope="col">Date</th>
+				      <th scope="col">Employe</th>
+				    </tr>
+				  </thead>
+				  
+				  <tbody >
+				    <tr th:each="op:${PagesOperations}" th:if="${op.employe.nomEmploye}">
+				    
+				      <td th:text="${op.numeroOperation}"></td>
+				      <td th:text="${op.class.simpleName}"></td>
+				      <td th:text="${op.montant}"></td>
+				      <td th:text="${op.dateOperation}"></td>
+					  <td th:text="${op.employe.nomEmploye}"></td> 
+						   
+				    </tr>
+				  </tbody>
+			</table>
+			<!-- <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+
+                        <li th:each="page,status:${pages2}" class="page-item">
+                            <a th:class="${pageCourante}==${status.index}?'active1':'page-link'" th:href="@{/consulterCompte(codeCompte=${codeCompte},page=${status.index},size=${size})}" th:text="${status.index}"></a>
+                        </li>
+
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>  -->
+			</div>
+			  
+		</div>
+	</div>
+
+<br/><br/>
+  
+
+	
+	
+<br/><br/><br/><br/><br/><br/><br/><br/>
+	<footer th:replace="fragment/footer :: footer" ></footer> 
+<script type="text/javascript">
+
+	$(document).ready( function () {
+    $('#myTable').DataTable();
+  
+} );
+</script >
+
+</body>
+
+</html>
